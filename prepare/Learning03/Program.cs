@@ -1,57 +1,37 @@
 using System;
-using System.Collections.Generic;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Job job1 = new Job();
-        job1._jobTitle = "Software Engineer";
-        job1._company = "Microsoft";
-        job1._startYear = 2019;
-        job1._endYear = 2022;
+        Fraction f1 = new Fraction();
+        Console.WriteLine(f1.GetFractionString());
+        Console.WriteLine(f1.GetDecimalValue());
 
-        Job job2 = new Job();
-        job2._jobTitle = "Manager";
-        job2._company = "Apple";
-        job2._startYear = 2022;
-        job2._endYear = 2023;
+        Fraction f2 = new Fraction(5);
+        Console.WriteLine(f2.GetFractionString());
+        Console.WriteLine(f2.GetDecimalValue());
 
-        Resume myResume = new Resume();
-        myResume._name = "Allison Rose";
+        Fraction f3 = new Fraction(3, 4);
+        Console.WriteLine(f3.GetFractionString());
+        Console.WriteLine(f3.GetDecimalValue());
 
-        myResume._jobs.Add(job1);
-        myResume._jobs.Add(job2);
+        Fraction f4 = new Fraction(1, 3);
+        Console.WriteLine(f4.GetFractionString());
+        Console.WriteLine(f4.GetDecimalValue());
 
-        myResume.Display();
-    }
-}
-
-class Job
-{
-    public string _jobTitle;
-    public string _company;
-    public int _startYear;
-    public int _endYear;
-
-    public void Display()
-    {
-        Console.WriteLine($"{_jobTitle} {_company} ({_startYear}-{_endYear})");
-    }
-}
-
-class Resume
-{
-    public string _name;
-    public List<Job> _jobs = new List<Job>();
-
-    public void Display()
-    {
-        Console.WriteLine($"Name: {_name}");
-        Console.WriteLine("Jobs:");
-        foreach (var job in _jobs)
+        Random random= new Random();
+        Fraction f5 = new Fraction();
+        for (int i = 0; i < 20; i++)
         {
-            job.Display();
+            int topValue = random.Next(1, 11);
+            int bottomValue = random.Next(1, 11);
+            f5.SetTop(topValue);
+            f5.SetBottom(bottomValue);
+            Console.Write($"Fraction {i + 1}: ");
+            Console.Write($"string: {f5.GetFractionString()}");
+            Console.WriteLine($" Number: {f5.GetDecimalValue()}");
         }
     }
 }
+
