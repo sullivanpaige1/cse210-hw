@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace OrderSystem
 {
@@ -73,8 +72,15 @@ namespace OrderSystem
             return Price * Quantity;
         }
 
-        public string GetName() => Name;
-        public int GetId() => ProductId;
+        public string GetName()
+        {
+            return Name;
+        }
+
+        public int GetId()
+        {
+            return ProductId;
+        }
     }
 
     class Order
@@ -94,24 +100,40 @@ namespace OrderSystem
 
         public double TotalPrice()
         {
-            double shipping = Customer.LivesInUSA() ? 5 : 35;
-            double productTotal = 0;
-            foreach (var p in Products)
-                productTotal += p.TotalCost();
-            return productTotal + shipping;
+            double shipping;
+
+            if (Customer.LivesInUSA())
+                shipping = 5;
+            else
+                shipping = 35;
+
+            double total = 0;
+
+            foreach (Product p in Products)
+            {
+                total += p.TotalCost();
+            }
+
+            return total + shipping;
         }
 
         public string PackingLabel()
         {
             string label = "Packing Label:\n";
-            foreach (var p in Products)
-                label += $"{p.GetName()} (ID: {p.GetId()})\n";
+
+            foreach (Product p in Products)
+            {
+                label += p.GetName() + " (ID: " + p.GetId() + ")\n";
+            }
+
             return label;
         }
 
         public string ShippingLabel()
         {
-            return $"Shipping Label:\n{Customer.GetName()}\n{Customer.GetAddress()}";
+            return "Shipping Label:\n" +
+                   Customer.GetName() + "\n" +
+                   Customer.GetAddress();
         }
     }
 
@@ -122,22 +144,27 @@ namespace OrderSystem
             Address addr1 = new Address("123 Main St", "Rexburg", "ID", "USA");
             Customer cust1 = new Customer("Alice Smith", addr1);
             Order order1 = new Order(cust1);
+
             order1.AddProduct(new Product("Laptop", 101, 799.99, 1));
             order1.AddProduct(new Product("Mouse", 102, 25.50, 2));
 
             Address addr2 = new Address("456 Maple Ave", "Toronto", "ON", "Canada");
             Customer cust2 = new Customer("Bob Jones", addr2);
             Order order2 = new Order(cust2);
+
             order2.AddProduct(new Product("Keyboard", 201, 49.99, 1));
             order2.AddProduct(new Product("Monitor", 202, 199.99, 1));
 
-            List<Order> orders = new List<Order> { order1, order2 };
-            foreach (var order in orders)
+            List<Order> orders = new List<Order>();
+            orders.Add(order1);
+            orders.Add(order2);
+
+            foreach (Order order in orders)
             {
                 Console.WriteLine(order.PackingLabel());
                 Console.WriteLine(order.ShippingLabel());
-                Console.WriteLine($"Total Price: ${order.TotalPrice():F2}");
-                Console.WriteLine(new string('-', 40));
+                Console.WriteLine("Total Price: $" + order.TotalPrice().ToString("F2"));
+                Console.WriteLine("----------------------------------------");
             }
         }
     }
